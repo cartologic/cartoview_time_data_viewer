@@ -1,0 +1,40 @@
+<div class="time-data-viewer " layout="row" layout-align="start center">
+    <md-content ng-show="!collapsed"
+         class=" md-whiteframe-2dp"
+         layout="column" layout-align="start center" >
+        <h4>{{ service.timeDataViewer.timeSliderTitle }}</h4>
+        <div layout="row">
+            <div layout="column" layout-align="center center" class="md-padding">
+                <span>Layer</span>
+                <span>{{ service.timeDataViewer.layer }}</span>
+            </div>
+            <div layout="column" layout-align="center center" class="md-padding">
+                <span>Attribute</span>
+                <span>{{ service.timeDataViewer.attribute }}</span>
+            </div>
+            <div layout="column" layout-align="center center" class="md-padding">
+                <span>From Date</span>
+                <span>{{ service.timeDataViewer.fromDate }}</span>
+            </div>
+            <div layout="column" layout-align="center center" class="md-padding">
+                <span>To Date</span>
+                <span>{{ service.timeDataViewer.toDate }}</span>
+            </div>
+            <div layout="column" layout-align="center center" class="md-padding">
+                <span>Step Duration Days</span>
+                <span>{{ service.timeDataViewer.stepDuration }}</span>
+            </div>
+            <div layout="column" layout-align="center center" class="md-padding">
+                <span>Time Frame</span>
+                <span><strong>{{ service.timeDataViewer.timeFrame }}</strong></span>
+            </div>
+        </div>
+        <md-progress-circular md-mode="indeterminate" ng-show="service.timeDataViewer.loading"></md-progress-circular>
+    </md-content>
+    <div>
+        <md-button  ng-click="collapsed = !collapsed" class="md-raised summary-collapse-btn">
+            <md-icon ng-show="!collapsed">expand_more</md-icon>
+            <md-icon ng-show="collapsed">expand_less</md-icon>
+        </md-button>
+    </div>
+</div>

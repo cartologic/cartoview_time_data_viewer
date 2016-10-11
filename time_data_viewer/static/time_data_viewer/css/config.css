@@ -1,0 +1,4 @@
+md-list-item.selected {
+    color: rgba(255,255,255,0.87);
+    background-color: rgb(63,81,181);
+}

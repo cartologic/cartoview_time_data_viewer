@@ -1,0 +1,32 @@
+<div layout-padding>
+    <div layout="column" layout-align="start start">
+        <md-input-container>
+            <label>Time Slider Title</label>
+            <input placeholder="Item Title" ng-model="instanceObj.config.timeDataViewer.timeSliderTitle">
+        </md-input-container>
+        <md-input-container>
+            <label>Layer</label>
+            <md-select ng-model="instanceObj.config.timeDataViewer.layer">
+                <md-option ng-repeat="layer in mapLayers" ng-value="layer.name">{{ layer.title }}</md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container>
+            <label>Time Attribute</label>
+            <md-select ng-model="instanceObj.config.timeDataViewer.attribute">
+                <md-option ng-repeat="attribute in getLayerAttrs(item)" ng-value="attribute.name">{{ attribute.title }}</md-option>
+            </md-select>
+        </md-input-container>
+        <div layout="column">
+            <label>From date</label>
+            <md-datepicker ng-model="instanceObj.config.timeDataViewer.fromDate" name="fromDate"></md-datepicker>
+        </div>
+        <div layout="column">
+            <label>To date</label>
+            <md-datepicker ng-model="instanceObj.config.timeDataViewer.toDate" name="toDate"></md-datepicker>
+        </div>
+        <md-input-container>
+            <label>Step Duration (days)</label>
+            <input type="number" ng-model="instanceObj.config.timeDataViewer.stepDuration" min="1" step="1">
+        </md-input-container>
+    </div>
+</div>

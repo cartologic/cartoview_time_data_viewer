@@ -6,7 +6,7 @@ angular.module('cartoview.viewer.editor').directive('timeDataViewerConfig',  fun
     return {
         transclude: true,
         replace: true,
-        templateUrl: urlsHelper.static + "time_data_viewer/angular-templates/config-fields.html?" + new Date().getTime(),
+        templateUrl: urlsHelper.static + "cartoview_time_data_viewer/angular-templates/config-fields.html?" + new Date().getTime(),
         controller: function ($scope, dataService, $tastypieResource) {
             $scope.attributes = new $tastypieResource("geonodelayerattribute");
             $scope.instanceObj = dataService.instanceObj;

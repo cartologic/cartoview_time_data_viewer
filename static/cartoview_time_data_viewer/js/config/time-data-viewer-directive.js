@@ -38,7 +38,6 @@ angular.module('cartoview.viewer.editor').directive('timeDataViewerConfig',  fun
                 });
             };}
 
-
             $scope.getLayerAttrs = function () {
                 if (!timeDataViewer.layer) return null;
                 var layer;

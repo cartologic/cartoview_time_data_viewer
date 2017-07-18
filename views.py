@@ -52,6 +52,10 @@ def new(request, template="%s/edit.html" % APP_NAME, app_name=APP_NAME, context=
     return render(request, template, context)
 
 @login_required
-def edit(request, instance_id):
+def edit(request, instance_id, template="%s/edit.html" % APP_NAME, context={}):
     context = dict(widgets=widgets)
-    return viewer_views.edit(request, instance_id, context=context)
+    if request.method == 'POST':
+        return save(request, instance_id)
+    instance = AppInstance.objects.get(pk=instance_id)
+    context.update(instance=instance)
+    return render(request, template, context)

@@ -72,7 +72,7 @@ angular.module('cartoview.timeDataViewerApp').service('timeDataViewerService', f
   var fromDate = new Date(service.timeDataViewer.fromDate);
   var toDate = new Date(service.timeDataViewer.toDate);
   var stepDuration = service.timeDataViewer.stepDuration;
-  // console.log('-->', fromDate, toDate, stepDuration);
+   //console.log('-->', fromDate, toDate, stepDuration);
 
   // call temporal function
   service.playTemporal(wmsLayer, fromDate, toDate, stepDuration);

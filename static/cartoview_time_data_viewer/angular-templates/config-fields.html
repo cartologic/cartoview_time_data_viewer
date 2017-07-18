@@ -15,6 +15,12 @@
             <md-select ng-model="instanceObj.config.timeDataViewer.attribute">
                 <md-option ng-repeat="attribute in getLayerAttrs(item)" ng-value="attribute.name">{{ attribute.title }}</md-option>
             </md-select>
+            <div style="    background-color: rgba(232, 230, 28, 0.26);text-align:center;">
+                 <p><strong >Warning! </strong>  This app requires enabled time field in geoserver, please contact administrator to enable
+                                the time field in your layer
+                 </p>
+                 
+            </div>
         </md-input-container>
         <div layout="column">
             <label>From date</label>

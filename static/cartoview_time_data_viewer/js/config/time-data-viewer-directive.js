@@ -8,6 +8,7 @@ angular.module('cartoview.viewer.editor').directive('timeDataViewerConfig',  fun
         replace: true,
         templateUrl: urlsHelper.static + "cartoview_time_data_viewer/angular-templates/config-fields.html?" + new Date().getTime(),
         controller: function ($scope, dataService, $tastypieResource) {
+            console.log("dataService",$tastypieResource)
             $scope.attributes = new $tastypieResource("geonodelayerattribute");
             $scope.instanceObj = dataService.instanceObj;
             $scope.instanceObj.config.timeDataViewer = $scope.instanceObj.config.timeDataViewer || {};
@@ -23,6 +24,7 @@ angular.module('cartoview.viewer.editor').directive('timeDataViewerConfig',  fun
             var initialized = false;
             var populateLayers = function () {
                 $scope.mapLayers = [];
+                if(dataService.selected.map){
                 angular.forEach(dataService.selected.map.map_layers, function (layer) {
                     if (!layer.fixed) {
                         layer.params = JSON.parse(layer.layer_params);
@@ -34,7 +36,9 @@ angular.module('cartoview.viewer.editor').directive('timeDataViewerConfig',  fun
                         $scope.mapLayers.push(layerInfo);
                     }
                 });
-            };
+            };}
+
+
             $scope.getLayerAttrs = function () {
                 if (!timeDataViewer.layer) return null;
                 var layer;
@@ -65,6 +69,8 @@ angular.module('cartoview.viewer.editor').directive('timeDataViewerConfig',  fun
                 populateLayers();
             });
             populateLayers();
+            console.log("config",$scope.instanceObj.config.timeDataViewer)
         }
+
     }
 });

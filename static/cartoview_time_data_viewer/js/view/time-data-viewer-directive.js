@@ -10,5 +10,5 @@ angular.module('cartoview.timeDataViewerApp').directive('timeDataViewer',  funct
             $scope.service = timeDataViewerService;
             $scope.collaped = false;
         }
-  
-});
+
+}});

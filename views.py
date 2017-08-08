@@ -102,7 +102,10 @@ def new(request, template="%s/new.html" % APP_NAME, app_name=APP_NAME, context={
 
 @login_required
 def edit(request, instance_id, template="%s/edit.html" % APP_NAME, context={}):
+    instance = _resolve_appinstance(
+        request, instance_id, 'base.view_resourcebase', _PERMISSION_MSG_VIEW)
     context = dict(widgets=widgets)
+    context.update(keywords=mark_safe(json.dumps(instance.keyword_list())))
     if request.method == 'POST':
         return save(request, instance_id)
     instance = AppInstance.objects.get(pk=instance_id)

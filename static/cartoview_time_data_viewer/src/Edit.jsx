@@ -6,6 +6,7 @@ import Navigator from './components/Navigator.jsx'
 import ResourceSelector from './components/ResourceSelector.jsx'
 import General from './components/General.jsx'
 import NavigationTools from './components/NavigationTools.jsx'
+import TimeDataConfig from './components/TimeDataConfig.jsx'
 
 import EditService from './services/editService.jsx'
 
@@ -91,6 +92,43 @@ export default class Edit extends Component {
               config: Object.assign(this.state.config, basicConfig)
             })
             this.goToStep(++step)
+          },
+          onPrevious: () => {
+            this.onPrevious()
+          }
+        }
+      }, {
+        label: "Time Data Configrations",
+        component: TimeDataConfig,
+        props: {
+          resource: this.state.selectedResource,
+          instance: this.props.config
+            ? this.props.config.instance
+            : undefined,
+          config: this.props.config.instance
+            ? this.props.config.instance.config
+            : undefined,
+          id: this.props.config.instance
+            ? this.props.config.instance.id
+            : this.state.id
+              ? this.state.id
+              : undefined,
+          urls: this.props.config.urls,
+          success: this.state.success,
+          onComplete: (basicConfig) => {
+            console.log(basicConfig);
+            var {step} = this.state;
+            let config = Object.assign(this.state.config.config, basicConfig);
+            config.widgets = {
+              TimeDataViewer: true
+            }
+            this.setState({config: config})
+            this.editService.save(this.state.config, this.props.config.instance
+              ? this.props.config.instance.id
+              : undefined).then((res) => {
+              if (res.success == true)
+                this.setState({success: true, id: res.id})
+            })
           },
           onPrevious: () => {
             this.onPrevious()

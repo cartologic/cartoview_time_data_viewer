@@ -1,63 +1,80 @@
-{% extends "cartoview/base.html" %}
-{% block title %}
-    {{ block.super }} - {% if instance %}{{ instance.title  }}{% else %}New Map Viewer{% endif %}
+{% extends "app_manager/app_install_base.html" %}
+{% load bootstrap_tags staticfiles %}
+{% load i18n %}
+
+{% block title %} Time Data Viewer {% endblock %}
+{% block head %}
+    {% include "geonode/ext_header.html" %}
+    {% include "geonode/app_header.html" %}
+    {{ block.super }}
 {% endblock %}
-{% block styles %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}cartoview_map_viewer/css/edit.css">
-    {% for w in widgets %}
-        {% for css_url in w.config.css %}<link rel="stylesheet" href="{{ css_url }}">{% endfor %}
-    {% endfor %}
-{% endblock %}
-{% block scripts %}
-    <script type="text/javascript" src="{{ STATIC_URL }}vendor/angular-resource/angular-resource.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}vendor/angular-resource-tastypie/src/angular-resource-tastypie.min.js"></script>
-    {% include "cartoview_map_viewer/dynamic_edit_js.html" %}
-    <script type="text/javascript" src="{{ STATIC_URL }}cartoview_map_viewer/js/edit.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}cartoview_map_viewer/js/edit/data-service.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}cartoview_map_viewer/js/edit/map-selector-directive.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}cartoview_map_viewer/js/edit/basic-config-directive.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}cartoview_map_viewer/js/edit/basic-controls-directive.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}cartoview_map_viewer/js/edit/actions-bar-directive.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}cartoview_map_viewer/js/edit/widget-config-directive.js"></script>
-    {% for w in widgets %}
-        {% for js_url in w.config.js %}<script type="text/javascript" src="{{ js_url }}"></script>{% endfor %}
-    {% endfor %}
-{% endblock %}
-{% block body_directives %}ng-app="cartoview.viewer.editor"{% endblock %}
 {% block body %}
-<div layout="row" layout-align="center center" layout-wrap>
-       <md-content layout-padding flex-gt-sm="70" flex="100">
-         {% load static %}
-<div layout="row">
- <div layout="column" flex="25">
-   <a href="/">
-    <img src="{% static 'cartoview_geonode_viewer/cartoview-logo-text.png' %}"  />
-  </a>
- </div>
- <div layout="column" flex="65" >
-    <h3  style="text-align:right ;color:#6E6E6E;">Cartoview Time and Date viewer</h3>
- </div>
-
-</div>
-<hr style="padding:0px;border: 1px solid #6E6E6E"/>
-
-<div layout="row" layout-align="center center" layout-wrap>
-    <md-content layout-padding flex-gt-sm="70" flex="100">
-        <h4>{% if instance %}Edit: {{ instance.title  }}{% else %}New Map Viewer{% endif %}</h4>
-        <map-selector></map-selector>
-        <div>
-            <basic-config></basic-config>
-            <basic-controls></basic-controls>
-            <div>
-                {% for w in widgets %}
-                    <widget-config widget-name="{{ w.name }}">
-                        {% if w.config.directive %}<{{ w.config.directive }}></{{ w.config.directive}}>{% endif %}
-                    </widget-config>
-                {% endfor %}
+    <div id="page-wrapper">
+        <div class="container-fluid">
+          <div class="page-header">
+            <div class="row">
+              <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8"><span class="h1">Time Data Viewer</span></div>
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#myModal">?</button></div>
             </div>
-            <actions-bar ng-if="selected.map"></actions-bar>
+          </div>
+            <div id="root"></div>
         </div>
-    </md-content>
-</div>
+    </div>
 
+{% endblock %}
+{% block extra_script %}
+    <script src="{{ STATIC_URL }}cartoview_time_data_viewer/dist/config.bundle.js"></script>
+    <script>
+
+    {% if instance %}
+    var appConfig = {{ instance.config|escape|safe }};
+    var abstract = " {% spaceless %}{{ instance.abstract|title }}{% endspaceless %} ";
+    var title = "{{ instance.title }}";
+    var map_id={{instance.map_id}};
+    var instance_id={{instance.id}};
+    var geoserver_url = "{{ GEOSERVER_BASE_URL }}";
+    var abstract = " {% spaceless %}{{ instance.abstract|title }}{% endspaceless %} ";
+    var keywords = {{keywords|safe}};
+    {% endif %}
+
+    var username = "{{instance.owner.username}}";
+    var viewer = new Viewer('root', {
+      'instance': {
+        map: {
+          id: map_id,
+          title: title,
+          abstract: abstract
+        },
+        id: instance_id,
+        config: appConfig
+      },
+      'urls': {
+        'resources_url': "/api/maps",
+        "mapLayers":"/apps/maplayers/api",
+        "layerAttributes":"/apps/rest/app_manager/geonodelayerattribute/",
+        "view": "/apps/cartoview_time_data_viewer/" + instance_id + "/view/"
+      },
+      'limit': 9
+    }, username, keywords);
+    viewer.view();
+    </script>
+    <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Time Data Viewer</h4>
+      </div>
+      <div class="modal-body">
+        <p>Cartoview App to display WMS time enabled spatial data within time intervals (Time Manager)</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 {% endblock %}
